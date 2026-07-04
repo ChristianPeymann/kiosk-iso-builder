@@ -13,14 +13,16 @@ jobs:
       - name: Build Image
         run: |
           docker run --rm --privileged -v $PWD:/build archlinux:latest /bin/bash -c "
-            pacman -Sy --noconfirm archiso
+            pacman -Sy --noconfirm archiso dos2unix
+            mkdir -p /build/work /build/out
             cp -r /usr/share/archiso/configs/releng /tmp/custom_profile
             cp -a /build/. /tmp/custom_profile/
             rm -rf /tmp/custom_profile/.github
+            find /tmp/custom_profile -type f -exec dos2unix {} +
             mkarchiso -v -w /build/work -o /build/out /tmp/custom_profile/
           "
           
       - uses: actions/upload-artifact@v4
         with:
-          name: kiosk_iso
+          name: ark_iso
           path: out/*.iso
