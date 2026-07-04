@@ -1,0 +1,12 @@
+base
+linux
+linux-firmware
+networkmanager
+openssh
+xorg-server
+xorg-xinit
+chromium
+openbox
+git
+rsync
+cifs-utils

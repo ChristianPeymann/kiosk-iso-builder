@@ -1,0 +1,26 @@
+name: Build Kiosk ISO
+on:
+  schedule:
+    - cron: '0 0 * * 0'
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      
+      - name: Build Image
+        run: |
+          docker run --rm --privileged -v $PWD:/build archlinux:latest /bin/bash -c "
+            pacman -Sy --noconfirm archiso
+            cp -r /usr/share/archiso/configs/releng /tmp/custom_profile
+            cp -a /build/. /tmp/custom_profile/
+            rm -rf /tmp/custom_profile/.github
+            mkarchiso -v -w /build/work -o /build/out /tmp/custom_profile/
+          "
+          
+      - uses: actions/upload-artifact@v4
+        with:
+          name: kiosk_iso
+          path: out/*.iso
