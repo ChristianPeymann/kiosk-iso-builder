@@ -13,7 +13,7 @@ jobs:
       - name: Build Image
         run: |
           docker run --rm --privileged -v $PWD:/build archlinux:latest /bin/bash -c "
-            pacman -Sy --noconfirm archiso dos2unix
+            pacman -Syu --noconfirm archiso dos2unix
             mkdir -p /build/work /build/out
             cp -r /usr/share/archiso/configs/releng /tmp/custom_profile
             cp -a /build/. /tmp/custom_profile/
